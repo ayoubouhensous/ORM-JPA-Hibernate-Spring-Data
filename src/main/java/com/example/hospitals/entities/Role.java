@@ -1,28 +1,23 @@
 package com.example.hospitals.entities;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
-
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data @NoArgsConstructor @AllArgsConstructor
-public class Consultation {
+public class Role {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
+    private String roleName;
 
-    private Date dateConsultation;
-
-    private String Rapport;
-
-    @OneToOne
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private RendezVous rendezVous;
-
+    @ManyToMany(mappedBy = "roles",fetch = FetchType.EAGER)
+    private List<User> users = new ArrayList<>();
 
 }

@@ -5,6 +5,7 @@ import com.example.hospitals.repositories.ConsultationRepository;
 import com.example.hospitals.repositories.MedcineRepository;
 import com.example.hospitals.repositories.RendezVousRepository;
 import com.example.hospitals.service.Hospitalservice;
+import com.example.hospitals.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,7 +24,7 @@ public class HospitalsApplication {
     }
 
     @Bean
-    CommandLineRunner start(Hospitalservice hospitalservice) {
+    CommandLineRunner start(Hospitalservice hospitalservice, UserService userService) {
         return args -> {
 
             // Ajouter des patients
@@ -66,7 +67,37 @@ public class HospitalsApplication {
 
             hospitalservice.saveConsultation(consultation);
 
+            User user1=new User();
+            user1.setUserName("ayoub");
+            user1.setPassword("ayoub");
 
+            User user2=new User();
+            user2.setUserName("hicham");
+            user2.setPassword("hicham");
+
+            userService.addUser(user1);
+            userService.addUser(user2);
+
+            Role role1 = new Role();
+            role1.setRoleName("admin");
+            Role role2 = new Role();
+            role2.setRoleName("tech");
+
+            userService.addRole(role1);
+            userService.addRole(role2);
+
+            userService.addRoleToUser(role1, user1);
+
+
+            try{
+                User user = userService.authenticate("ayoub", "hicham");
+                System.out.println(user.getId());
+                System.out.println(user.getUserName());
+                user.getRoles().forEach(System.out::println);
+
+            }catch (RuntimeException e){
+                e.printStackTrace();
+            }
         };
     }
 }
