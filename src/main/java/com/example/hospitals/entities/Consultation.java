@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.sql.Date;
 
 
 @Entity
@@ -19,7 +19,7 @@ public class Consultation {
 
     private String Rapport;
 
-    @OneToOne()
+    @OneToOne
     private RendezVous rendezVous;
 
 
